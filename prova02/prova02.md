@@ -1,2 +1,3 @@
-Anderson Alves dos Santos
-Juliana Bastos Rittel
+# Equipe 
+- Anderson Alves dos Santos.
+- Juliana Bastos Rittel.
