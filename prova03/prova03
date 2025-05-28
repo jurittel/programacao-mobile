@@ -1,0 +1,303 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+enum PetGenero { macho, femea }
+
+void main() {
+  runApp(const PetApp());
+}
+
+class PetApp extends StatelessWidget {
+  const PetApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PetApp',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green.shade200,
+          primary: Colors.green.shade200,
+          secondary: Colors.pink.shade100,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF8FFF8),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.green.shade200,
+          foregroundColor: Colors.white,
+        ),
+        textTheme: GoogleFonts.quicksandTextTheme(),
+      ),
+      home: const PerfilPetScreen(),
+    );
+  }
+}
+
+class PerfilPetScreen extends StatefulWidget {
+  const PerfilPetScreen({super.key});
+
+  @override
+  State<PerfilPetScreen> createState() => _PerfilPetScreenState();
+}
+
+class _PerfilPetScreenState extends State<PerfilPetScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final nomeController = TextEditingController();
+  final racaController = TextEditingController();
+  final idadeController = TextEditingController();
+  final observacoesController = TextEditingController();
+
+  PetGenero? _generoSelecionado;
+  bool _gostaCriancas = false;
+  bool _conviveOutrosAnimais = false;
+  bool _disponivelParaAdocao = false;
+
+  final Color rosaSuave = Colors.pink.shade300;
+  final Color verdeMenta = const Color(0xFFD0F0C0);
+  final Color verdeForte = Colors.green.shade600;
+  final Color rosaForte = Colors.pink.shade300;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(child: Text('🐕‍🦺   🐾   🐩   🐾   🐕   Perfil do Pet   🐈   🐾   🐈‍⬛   🐾   🐇')),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            tooltip: 'Perfil do Usuário',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Perfil do usuário em construção :)')),
+              );
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Cadastro de Perfil do Pet 📃',
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: Colors.green.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                '🐶 Preencha todos os dados do seu pet com atenção 🐱',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.green.shade700,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: nomeController,
+                    decoration: InputDecoration(
+                      labelText: 'Nome do Pet',
+                      prefixIcon: Icon(Icons.pets, color: rosaSuave),
+                      border: const OutlineInputBorder(),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Informe o nome do pet' : null,
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: racaController,
+                    decoration: InputDecoration(
+                      labelText: 'Raça',
+                      prefixIcon: Icon(Icons.card_giftcard, color: rosaSuave),
+                      border: const OutlineInputBorder(),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Informe a raça do pet' : null,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: idadeController,
+                    decoration: InputDecoration(
+                      labelText: 'Idade',
+                      prefixIcon: Icon(Icons.cake, color: rosaSuave),
+                      border: const OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Informe a idade do pet';
+                      final idade = int.tryParse(value);
+                      if (idade == null || idade < 0) return 'Idade inválida';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: observacoesController,
+                    decoration: InputDecoration(
+                      labelText: 'Observações',
+                      prefixIcon: Icon(Icons.notes, color: rosaSuave),
+                      border: const OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildCard(
+              icon: Icons.transgender,
+              title: 'Gênero do Pet',
+              backgroundColor: verdeMenta,
+              children: [
+                RadioListTile<PetGenero>(
+                  title: const Text('Macho'),
+                  value: PetGenero.macho,
+                  groupValue: _generoSelecionado,
+                  activeColor: rosaSuave,
+                  onChanged: (value) => setState(() => _generoSelecionado = value),
+                ),
+                RadioListTile<PetGenero>(
+                  title: const Text('Fêmea'),
+                  value: PetGenero.femea,
+                  groupValue: _generoSelecionado,
+                  activeColor: rosaSuave,
+                  onChanged: (value) => setState(() => _generoSelecionado = value),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildCard(
+              icon: Icons.favorite,
+              title: 'Preferências de convivência',
+              backgroundColor: verdeMenta,
+              children: [
+                CheckboxListTile(
+                  title: const Text('Gosta de crianças'),
+                  secondary: Icon(Icons.child_care, color: rosaSuave),
+                  value: _gostaCriancas,
+                  activeColor: rosaSuave,
+                  onChanged: (value) => setState(() => _gostaCriancas = value ?? false),
+                ),
+                CheckboxListTile(
+                  title: const Text('Convive bem com outros animais'),
+                  secondary: Icon(Icons.pets, color: rosaSuave),
+                  value: _conviveOutrosAnimais,
+                  activeColor: rosaSuave,
+                  onChanged: (value) => setState(() => _conviveOutrosAnimais = value ?? false),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SwitchListTile(
+              title: const Text('Disponível para adoção'),
+              secondary: Icon(Icons.volunteer_activism, color: rosaSuave),
+              activeColor: rosaSuave,
+              value: _disponivelParaAdocao,
+              onChanged: (valor) => setState(() => _disponivelParaAdocao = valor),
+            ),
+            Text(
+              'Status: ${_disponivelParaAdocao ? '🌸 Disponível' : '❌ Indisponível'}',
+              style: TextStyle(fontWeight: FontWeight.bold, color: rosaSuave),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+    backgroundColor: verdeForte, // Cor de fundo
+    foregroundColor: Colors.white, // Cor do texto e ícone
+  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('Dados salvos com sucesso! 🎉'),
+                          backgroundColor: rosaSuave,
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.save),
+                  label: const Text('Salvar'),
+                ),
+                ElevatedButton.icon(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: rosaForte, // Fundo rosa forte
+    foregroundColor: Colors.white, // Texto e ícone brancos
+  ),
+  onPressed: () {
+    _formKey.currentState!.reset();
+    nomeController.clear();
+    racaController.clear();
+    idadeController.clear();
+    observacoesController.clear();
+    setState(() {
+      _generoSelecionado = null;
+      _gostaCriancas = false;
+      _conviveOutrosAnimais = false;
+      _disponivelParaAdocao = false;
+    });
+  },
+  icon: const Icon(Icons.refresh),
+  label: const Text('Limpar'),
+),
+
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard({
+    required IconData icon,
+    required String title,
+    required List<Widget> children,
+    Color? backgroundColor,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: backgroundColor ?? Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: rosaSuave),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+}
