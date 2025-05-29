@@ -97,7 +97,7 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                '🐶 Preencha todos os dados do seu pet com atenção 🐱',
+                '🐶 Preencha os dados do seu pet! 🐱',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
