@@ -224,8 +224,8 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
               children: [
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-    backgroundColor: verdeForte, // Cor de fundo
-    foregroundColor: Colors.white, // Cor do texto e ícone
+    backgroundColor: verdeForte,
+    foregroundColor: Colors.white,
   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -242,8 +242,8 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
                 ),
                 ElevatedButton.icon(
   style: ElevatedButton.styleFrom(
-    backgroundColor: rosaForte, // Fundo rosa forte
-    foregroundColor: Colors.white, // Texto e ícone brancos
+    backgroundColor: rosaForte,
+    foregroundColor: Colors.white,
   ),
   onPressed: () {
     _formKey.currentState!.reset();
